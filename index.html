@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+      <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
     <!-- SEO & App Store Metadata -->
@@ -44,7 +45,25 @@
         const { useState, useEffect, useRef, useCallback } = React;
 
         // PASTE YOUR NEW RESTRICTED KEY HERE
-      const DEFAULT_API_KEY = "AIzaSyDUNhyjLXjEqtfE5wHxoWgDHupWUa1LgQg";
+
+            // Security Configuration
+    const CONFIG = {
+      GEMINI_API_KEY: 'AIzaSyDEjzgjpMuzJ9ZsC6dfkpdxVAUIQTVDv9Q',
+      ALLOWED_DOMAINS: ['memefusion.aeye.monster', 'localhost']
+    };
+
+    // Domain validation
+    function validateDomain() {
+      const currentDomain = window.location.hostname;
+      const isAllowed = CONFIG.ALLOWED_DOMAINS.some(domain => currentDomain.includes(domain));
+      if (!isAllowed) {
+        console.error('Unauthorized domain access');
+        return false;
+      }
+      return true;
+    }
+
+      // const CONFIG.GEMINI_API_KEY = "AIzaSyDUNhyjLXjEqtfE5wHxoWgDHupWUa1LgQg";
         const COMMUNITY_FEED = [
             { id: 1, url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&h=400&fit=crop', top: 'When the code', bottom: 'Finally runs', filter: '3D Render' },
             { id: 2, url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop', top: 'Waiting for', bottom: 'The weekend', filter: 'Cyberpunk' },
@@ -130,6 +149,16 @@
         };
 
         function App() {
+              // Validate domain on mount
+  if (!validateDomain()) {
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center', color: 'red' }}>
+        <h1>Access Denied</h1>
+        <p>This application is not authorized to run on this domain.</p>
+      </div>
+    );
+  }
+
             const [view, setView] = useState('landing');
             const [image, setImage] = useState(null);
             const [topText, setTopText] = useState("");
@@ -157,11 +186,11 @@
 
             const suggestCaptions = async () => {
                 if (!image || visionLoading || cooldown) return;
-                if (!DEFAULT_API_KEY) { setError("API Key Missing. Renew your key in the code."); return; }
+                if (!CONFIG.GEMINI_API_KEY) { setError("API Key Missing. Renew your key in the code."); return; }
                 setVisionLoading(true); setError(null);
                 const base64Data = image.split(',')[1];
                 try {
-                    const data = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${DEFAULT_API_KEY}`, {
+                    const data = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${CONFIG.GEMINI_API_KEY}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ contents: [{ parts: [{ text: "Suggest a humorous viral meme caption. JSON: {top, bottom}." }, { inlineData: { mimeType: "image/png", data: base64Data } }] }], generationConfig: { responseMimeType: "application/json" } })
@@ -174,12 +203,12 @@
 
             const fuseWithAI = async () => {
                 if (!image || cooldown) return;
-                if (!DEFAULT_API_KEY) { setError("API Key Missing. Renew your key in the code."); return; }
+                if (!CONFIG.GEMINI_API_KEY) { setError("API Key Missing. Renew your key in the code."); return; }
                 setLoading(true); setError(null);
                 const filter = AI_FILTERS.find(f => f.id === selectedFilter);
                 const base64Data = image.split(',')[1];
                 try {
-                    const data = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${DEFAULT_API_KEY}`, {
+                    const data = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${CONFIG.GEMINI_API_KEY}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
