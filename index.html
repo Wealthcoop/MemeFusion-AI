@@ -101,7 +101,7 @@
     <script type="text/babel">
         const { useState, useEffect, useRef, useCallback } = React;
 
-        const apiKey = "AIzaSyDtrWM-GYEYXfb2iNK0FThUcRg78Io_l";;
+        const apiKey = "AIzaSyDtrWM-GYEYXfb2iNK0FThUcRg78Io_lHw"; 
 
         // --- PRODUCTION CONSTANTS ---
         const COMMUNITY_FEED = [
@@ -158,6 +158,9 @@
                     const response = await fetch(url, options);
                     if (response.ok) return await response.json();
                     if (response.status === 429) throw new Error("Rate limited");
+                    const errorText = await response.text();
+                    console.error("API Error Response:", errorText);
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
                 } catch (err) {
                     if (i === maxRetries - 1) throw err;
                     const delay = Math.pow(2, i) * 1000;
@@ -222,7 +225,7 @@
 
         function App() {
             const [view, setView] = useState('landing');
-            const [activeModal, setActiveModal] = useState(null); // 'settings', 'privacy', 'terms'
+            const [activeModal, setActiveModal] = useState(null); 
             const [image, setImage] = useState(null);
             const [topText, setTopText] = useState("");
             const [bottomText, setBottomText] = useState("");
@@ -289,7 +292,10 @@
                     setTopText(suggested.top.toUpperCase());
                     setBottomText(suggested.bottom.toUpperCase());
                     haptic('medium');
-                } catch (e) { setError("AI Vision failed. Check your network."); } finally { setVisionLoading(false); }
+                } catch (e) { 
+                    console.error(e);
+                    setError("AI Vision failed. Check your API key or network."); 
+                } finally { setVisionLoading(false); }
             };
 
             const fuseWithAI = async () => {
@@ -313,7 +319,10 @@
                     setFusedImage(newUrl);
                     setHistory(prev => [{ id: Date.now(), url: newUrl, top: topText, bottom: bottomText }, ...prev].slice(0, 5));
                     haptic('heavy');
-                } catch (e) { setError("Fusion logic error. Try another aesthetic."); } finally { setLoading(false); }
+                } catch (e) { 
+                    console.error(e);
+                    setError("Fusion logic error. Ensure Gemini Image Preview model is enabled."); 
+                } finally { setLoading(false); }
             };
 
             const speakMeme = async () => {
@@ -333,7 +342,10 @@
                     const rate = parseInt(audioPart.mimeType.split('rate=')[1]) || 24000;
                     const pcm = new Uint8Array(atob(audioPart.data).split("").map(c => c.charCodeAt(0)));
                     new Audio(URL.createObjectURL(pcmToWav(pcm, rate))).play();
-                } catch (e) { setError("TTS Narrator failed."); } finally { setVoiceLoading(false); }
+                } catch (e) { 
+                    console.error(e);
+                    setError("TTS Narrator failed."); 
+                } finally { setVoiceLoading(false); }
             };
 
             const handleShare = async () => {
@@ -421,7 +433,6 @@
 
                         {!isOnline && <div className="fixed top-0 inset-x-0 bg-red-500 text-white text-[10px] font-black py-1 text-center z-[300]">OFFLINE MODE - AI SYNC PAUSED</div>}
                         
-                        {/* Legal Modals */}
                         <Modal isOpen={activeModal === 'settings'} onClose={() => setActiveModal(null)} title="Forge Settings">
                             <div className="space-y-4">
                                 <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
