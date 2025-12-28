@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-      <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
     <!-- SEO & App Store Metadata -->
@@ -45,25 +44,8 @@
         const { useState, useEffect, useRef, useCallback } = React;
 
         // PASTE YOUR NEW RESTRICTED KEY HERE
+        const DEFAULT_API_KEY = "AIzaSyDUNhyjLXjEqtfE5wHxoWgDHupWUa1LgQg"; 
 
-            // Security Configuration
-    const CONFIG = {
-      GEMINI_API_KEY: 'AIzaSyDUNhyjLXjEqtfE5wHxoWgDHupWUa1LgQg',
-      ALLOWED_DOMAINS: ['memefusion.aeye.monster', 'localhost']
-    };
-
-    // Domain validation
-    function validateDomain() {
-      const currentDomain = window.location.hostname;
-      const isAllowed = CONFIG.ALLOWED_DOMAINS.some(domain => currentDomain.includes(domain));
-      if (!isAllowed) {
-        console.error('Unauthorized domain access');
-        return false;
-      }
-      return true;
-    }
-
-      // const CONFIG.GEMINI_API_KEY = "AIzaSyDUNhyjLXjEqtfE5wHxoWgDHupWUa1LgQg";
         const COMMUNITY_FEED = [
             { id: 1, url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&h=400&fit=crop', top: 'When the code', bottom: 'Finally runs', filter: '3D Render' },
             { id: 2, url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=400&fit=crop', top: 'Waiting for', bottom: 'The weekend', filter: 'Cyberpunk' },
@@ -98,8 +80,8 @@
             { id: 'none', name: 'Original', icon: 'image', prompt: '' },
             { id: 'anime', name: 'Anime', icon: 'swords', prompt: 'High-definition Shonen anime illustration, sharp cel-shading, vibrant colors, iconic expressive manga eyes, professional line art, Studio Ghibli meets Makoto Shinkai aesthetic' },
             { id: 'sketch', name: 'Sketch', icon: 'pencil', prompt: 'Masterful hand-drawn graphite pencil sketch, artistic cross-hatching, realistic charcoal shading, fine detailed pencil strokes, textured white paper background' },
-            { id: 'cyberpunk', name: 'Cyberpunk', icon: 'zap', prompt: 'Total futuristic cyberpunk transformation, cybernetic mechanical implants integrated into skin, heavy neon-lit electric armor, glowing circuitry, rain-drenched dystopian city lighting' },
-            { id: '3d', name: '3D Render', icon: 'box', prompt: 'Stylized 3D character render, Disney-Pixar animated film style, soft subsurface scattering, volumetric 3D modeling, cute vinyl toy texture, high-fidelity Octane render' },
+            { id: 'cyberpunk', name: 'Cyberpunk', icon: 'zap', prompt: 'Dramatically overhaul this image into a gritty Cyberpunk Masterpiece. Replace human skin with visible cybernetic tech-plating and robotic circuits. Subject must wear glowing neon-lit futuristic armor. Heavy rain-slicked tech-noir city lighting with high-contrast electric blue and hot pink hues' },
+            { id: '3d', name: '3D Render', icon: 'box', prompt: 'Completely recreate this scene as a high-end 3D CGI animation still. Transform the subject into a stylized 3D vinyl character with smooth plastic skin textures. High-poly Disney-Pixar film aesthetic, volumetric soft rim lighting, subsurface scattering, extreme depth-of-field, rendered in Octane for Unreal Engine 5' },
             { id: 'retro', name: 'Retro VHS', icon: 'monitor', prompt: '80s retro synthwave aesthetic, dramatic VHS glitch effects, chromatic aberration, heavy scanline distortion, vintage saturated neon colors' },
             { id: 'oil', name: 'Oil Painting', icon: 'palette', prompt: 'Thick impasto oil painting, heavy visible palette knife strokes, classical museum masterpiece texture, rich blended oil colors, canvas grain' },
         ];
@@ -149,16 +131,6 @@
         };
 
         function App() {
-              // Validate domain on mount
-  if (!validateDomain()) {
-    return (
-      <div style={{ padding: '2rem', textAlign: 'center', color: 'red' }}>
-        <h1>Access Denied</h1>
-        <p>This application is not authorized to run on this domain.</p>
-      </div>
-    );
-  }
-
             const [view, setView] = useState('landing');
             const [image, setImage] = useState(null);
             const [topText, setTopText] = useState("");
@@ -186,11 +158,11 @@
 
             const suggestCaptions = async () => {
                 if (!image || visionLoading || cooldown) return;
-                if (!CONFIG.GEMINI_API_KEY) { setError("API Key Missing. Renew your key in the code."); return; }
+                if (!DEFAULT_API_KEY) { setError("API Key Missing. Renew your key in the code."); return; }
                 setVisionLoading(true); setError(null);
                 const base64Data = image.split(',')[1];
                 try {
-                    const data = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${CONFIG.GEMINI_API_KEY}`, {
+                    const data = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${DEFAULT_API_KEY}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ contents: [{ parts: [{ text: "Suggest a humorous viral meme caption. JSON: {top, bottom}." }, { inlineData: { mimeType: "image/png", data: base64Data } }] }], generationConfig: { responseMimeType: "application/json" } })
@@ -203,18 +175,18 @@
 
             const fuseWithAI = async () => {
                 if (!image || cooldown) return;
-                if (!CONFIG.GEMINI_API_KEY) { setError("API Key Missing. Renew your key in the code."); return; }
+                if (!DEFAULT_API_KEY) { setError("API Key Missing. Renew your key in the code."); return; }
                 setLoading(true); setError(null);
                 const filter = AI_FILTERS.find(f => f.id === selectedFilter);
                 const base64Data = image.split(',')[1];
                 try {
-                    const data = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${CONFIG.GEMINI_API_KEY}`, {
+                    const data = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${DEFAULT_API_KEY}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
                             contents: [{ 
                                 parts: [
-                                    { text: `PERFORM AN ARTISTIC OVERHAUL. Completely transform this image into the following style: ${filter.prompt}. CORE RULE: Strictly maintain the exact pose, facial features, and composition of the subject. Re-imagine the entire world around them to match the style perfectly. Subject context: "${topText} ${bottomText}". High-end professional art.` }, 
+                                    { text: `TOTAL ARTISTIC OVERHAUL DIRECTIVE: Completely re-build this image from scratch into the following professional art style: ${filter.prompt}. CORE RULE: You must maintain the exact pose, body orientation, and facial silhouette of the original subject so it is recognizable. Replace all real-world materials with stylistic ones. Subject context: "${topText} ${bottomText}". Studio quality 4k render.` }, 
                                     { inlineData: { mimeType: "image/png", data: base64Data } }
                                 ] 
                             }], 
@@ -271,7 +243,7 @@
 
                         <div className="aspect-square bg-slate-800 rounded-[3rem] border border-white/5 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl group active:scale-[0.98] transition-transform">
                             {loading && <div className="absolute inset-0 z-30 bg-slate-950/90 flex flex-col items-center justify-center space-y-4"><div className="w-16 h-16 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin"></div><p className="font-black uppercase text-xs text-yellow-500">Synthesizing Style...</p></div>}
-                            {!image ? <div className="text-center space-y-4"><div className="w-20 h-20 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto border border-white/10 group-hover:scale-110 transition-transform"><Icon name="upload" className="text-slate-500" /></div><p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Tap to upload base</p></div> : 
+                            {!image ? <div className="text-center space-y-4"><div className="w-20 h-20 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto border border-white/10 active:scale-110 transition-transform"><Icon name="upload" className="text-slate-500" /></div><p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Tap to upload base</p></div> : 
                             <div className="w-full h-full relative"><img src={fusedImage || image} className="w-full h-full object-cover" />{!fusedImage && <div className={`absolute inset-0 p-8 flex flex-col pointer-events-none ${layout === 'classic' ? 'justify-between' : layout === 'top' ? 'justify-start' : layout === 'bottom' ? 'justify-end' : 'justify-center'}`}><h2 className="text-center font-black uppercase break-words leading-none meme-text" style={{ fontSize: `${fontSize}px`, color: textColor }}>{topText}</h2>{(layout === 'classic' || layout === 'bottom') && <h2 className="text-center font-black uppercase break-words leading-none meme-text" style={{ fontSize: `${fontSize}px`, color: textColor }}>{bottomText}</h2>}</div>}</div>}
                             {!loading && <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleFileUpload} />}
                         </div>
