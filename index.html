@@ -77,12 +77,12 @@
 
         const AI_FILTERS = [
             { id: 'none', name: 'Original', icon: 'image', prompt: '' },
-            { id: 'anime', name: 'Anime', icon: 'swords', prompt: 'Modern high-quality anime illustration, bold line art, vibrant cell shading, masterpiece style, expressive eyes' },
-            { id: 'sketch', name: 'Sketch', icon: 'pencil', prompt: 'Hand-drawn pencil sketch, charcoal shading, detailed graphite texture, artistic hatching, clean white background' },
-            { id: 'cyberpunk', name: 'Cyberpunk', icon: 'zap', prompt: 'Neon-noir aesthetic, cybernetic glowing details, futuristic electric yellow and blue lighting, rain-slick textures' },
-            { id: '3d', name: '3D Render', icon: 'box', prompt: 'Hyper-realistic 3D octane render, Unreal Engine 5 style, volumetric soft lighting, subsurface scattering, toy-like finish' },
-            { id: 'retro', name: 'Retro VHS', icon: 'monitor', prompt: '80s retro synthwave aesthetic, chromatic aberration, VHS scanline distortion, vintage saturated colors' },
-            { id: 'oil', name: 'Oil Painting', icon: 'palette', prompt: 'Thick impasto oil painting, visible palette knife strokes, classical museum masterpiece texture, rich oil colors' },
+            { id: 'anime', name: 'Anime', icon: 'swords', prompt: 'High-definition Shonen anime illustration, sharp cel-shading, vibrant colors, iconic expressive manga eyes, professional line art, Studio Ghibli meets Makoto Shinkai aesthetic' },
+            { id: 'sketch', name: 'Sketch', icon: 'pencil', prompt: 'Masterful hand-drawn graphite pencil sketch, artistic cross-hatching, realistic charcoal shading, fine detailed pencil strokes, textured white paper background' },
+            { id: 'cyberpunk', name: 'Cyberpunk', icon: 'zap', prompt: 'Total futuristic cyberpunk transformation, cybernetic mechanical implants integrated into skin, heavy neon-lit electric armor, glowing circuitry, rain-drenched dystopian city lighting' },
+            { id: '3d', name: '3D Render', icon: 'box', prompt: 'Stylized 3D character render, Disney-Pixar animated film style, soft subsurface scattering, volumetric 3D modeling, cute vinyl toy texture, high-fidelity Octane render' },
+            { id: 'retro', name: 'Retro VHS', icon: 'monitor', prompt: '80s retro synthwave aesthetic, dramatic VHS glitch effects, chromatic aberration, heavy scanline distortion, vintage saturated neon colors' },
+            { id: 'oil', name: 'Oil Painting', icon: 'palette', prompt: 'Thick impasto oil painting, heavy visible palette knife strokes, classical museum masterpiece texture, rich blended oil colors, canvas grain' },
         ];
 
         const fetchWithRetry = async (url, options, maxRetries = 3) => {
@@ -185,7 +185,7 @@
                         body: JSON.stringify({ 
                             contents: [{ 
                                 parts: [
-                                    { text: `Completely transform this image into the following style: ${filter.prompt}. Instructions: Strictly maintain the exact pose, facial expression, and composition of the subject. Re-imagine the textures and lighting to be high-end professional artwork. Subject context: "${topText} ${bottomText}".` }, 
+                                    { text: `PERFORM AN ARTISTIC OVERHAUL. Completely transform this image into the following style: ${filter.prompt}. CORE RULE: Strictly maintain the exact pose, facial features, and composition of the subject. Re-imagine the entire world around them to match the style perfectly. Subject context: "${topText} ${bottomText}". High-end professional art.` }, 
                                     { inlineData: { mimeType: "image/png", data: base64Data } }
                                 ] 
                             }], 
@@ -278,7 +278,8 @@
             );
         }
 
-        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
