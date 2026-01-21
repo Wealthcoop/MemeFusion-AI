@@ -1,0 +1,65 @@
+# API Keys and Secrets
+.env
+.env.local
+.env.production
+*.key
+keystore.properties
+
+# Keystores and Signing
+*.keystore
+*.jks
+*.p12
+*.pem
+
+# Backend
+backend/node_modules/
+backend/.env
+backend/logs/
+
+# Build artifacts
+node_modules/
+dist/
+build/
+*.aab
+*.apk
+*.zip
+
+# Android
+android/app/build/
+android/app/release/
+android/.gradle/
+android/local.properties
+android/captures/
+android/.cxx/
+android/.externalNativeBuild/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+
+# Backup files
+*-old.*
+*.backup
+*.bak
+
+# Don't commit old index.html with exposed API key
+index-old.html

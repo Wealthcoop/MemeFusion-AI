@@ -1,21 +1,20 @@
-842
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-      <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
     <!-- SEO & App Store Metadata -->
-    <title>MemeFusion AI | Next-Gen Meme Studio</title>
+    <title>MemeFusion AI | Unleash the Synth-Beast</title>
     <meta name="theme-color" content="#020617">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="application-name" content="MemeFusion">
-    <meta name="description" content="The ultimate AI meme forge. Features Vision Captioning, Cinematic Image Fusion, and AI Voice synthesis.">
+    <meta name="description" content="Unleash the Beast. Forge the Future. The ultimate AI meme forge powered by the Synth-Beast.">
 
     <!-- Web App Manifest -->
-    <link rel="manifest" href='data:application/manifest+json,{"name":"MemeFusion AI","short_name":"MemeFusion","start_url":".","display":"standalone","background_color":"#020617","theme_color":"#eab308","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/2584/2584683.png","sizes":"512x512","type":"image/png"}]}'>
+    <link rel="manifest" href='data:application/manifest+json,{"name":"MemeFusion AI","short_name":"MemeFusion","start_url":".","display":"standalone","background_color":"#020617","theme_color":"#ff2200","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/2584/2584683.png","sizes":"512x512","type":"image/png"}]}'>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -24,19 +23,70 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
-        :root { --brand-yellow: #eab308; --bg-slate: #020617; }
-        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; background-color: var(--bg-slate); color: white; overflow-x: hidden; user-select: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Orbitron:wght@700;900&display=swap');
+        :root { 
+            --brand-orange: #ff2200; 
+            --bg-slate: #020617; 
+            --glow-orange: rgba(255, 34, 0, 0.6);
+        }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+            scroll-behavior: smooth; 
+            background-color: var(--bg-slate); 
+            color: white; 
+            overflow-x: hidden; 
+            user-select: none; 
+        }
+        .brand-font { font-family: 'Orbitron', sans-serif; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .bg-grid { background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0); background-size: 32px 32px; }
-        .glow-text { text-shadow: 0 0 30px rgba(234, 179, 8, 0.4); }
-        .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .bg-grid { 
+            background-image: 
+                radial-gradient(circle at 2px 2px, rgba(255, 34, 0, 0.05) 1px, transparent 0),
+                radial-gradient(circle at 50% 50%, rgba(255, 34, 0, 0.02) 1px, transparent 0); 
+            background-size: 32px 32px, 64px 64px; 
+        }
+        .glow-text { text-shadow: 0 0 30px var(--glow-orange), 0 0 60px var(--glow-orange); }
+        .glow-border { box-shadow: 0 0 20px var(--glow-orange), inset 0 0 20px rgba(255, 34, 0, 0.1); }
+        .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 34, 0, 0.2); }
+        .synth-beast-eye {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ff2200, #cc1100);
+            box-shadow: 
+                0 0 20px #ff2200,
+                0 0 40px #ff2200,
+                0 0 60px rgba(255, 34, 0, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.3);
+            animation: pulse-eye 2s ease-in-out infinite;
+        }
+        @keyframes pulse-eye {
+            0%, 100% { box-shadow: 0 0 20px #ff2200, 0 0 40px #ff2200, 0 0 60px rgba(255, 34, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.3); }
+            50% { box-shadow: 0 0 30px #ff2200, 0 0 60px #ff2200, 0 0 90px rgba(255, 34, 0, 0.7), inset 0 0 30px rgba(255, 255, 255, 0.5); }
+        }
+        .beast-charging {
+            animation: beast-charge 8s ease-in-out;
+        }
+        @keyframes beast-charge {
+            0% { opacity: 0.3; transform: scale(0.95); }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; transform: scale(1); }
+        }
         input[type=range] { -webkit-appearance: none; background: transparent; }
         input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; background: #1e293b; border-radius: 4px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 32px; width: 32px; border-radius: 50%; background: var(--brand-yellow); cursor: pointer; margin-top: -12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6); border: 3px solid #020617; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 32px; width: 32px; border-radius: 50%; background: var(--brand-orange); cursor: pointer; margin-top: -12px; box-shadow: 0 0 15px var(--brand-orange), 0 4px 15px rgba(0, 0, 0, 0.6); border: 3px solid #020617; }
         .meme-text { text-shadow: 2px 2px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000, 0px 4px 15px rgba(0,0,0,0.8); }
         .safe-pb { padding-bottom: calc(env(safe-area-inset-bottom) + 1.5rem); }
         .safe-pt { padding-top: calc(env(safe-area-inset-top) + 1rem); }
+        .tier-badge {
+            background: linear-gradient(135deg, #ff2200 0%, #cc1100 100%);
+            animation: badge-glow 2s ease-in-out infinite;
+        }
+        @keyframes badge-glow {
+            0%, 100% { box-shadow: 0 0 10px #ff2200; }
+            50% { box-shadow: 0 0 20px #ff2200, 0 0 30px #ff2200; }
+        }
     </style>
 </head>
 <body class="bg-grid">
@@ -45,8 +95,10 @@
     <script type="text/babel">
         const { useState, useEffect, useRef, useCallback } = React;
 
-API KEY (Restricted to memefusion.aeye.monster and wealthcoop.github.io)
-        const DEFAULT_API_KEY = "AIzaSyDLEkneMhCeUxLDkD8VXSV_RhiXK4rQbnw";
+        // BACKEND API CONFIGURATION
+        const API_BASE_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000' 
+            : 'https://your-backend-url.com'; // UPDATE THIS WITH YOUR DEPLOYED BACKEND URL
 
         const COMMUNITY_FEED = [
             { id: 1, url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400&h=400&fit=crop', top: 'When the code', bottom: 'Finally runs', filter: '3D Render' },
@@ -64,7 +116,7 @@ API KEY (Restricted to memefusion.aeye.monster and wealthcoop.github.io)
 
         const PRESET_COLORS = [
             { name: 'White', value: '#ffffff' },
-            { name: 'Yellow', value: '#eab308' },
+            { name: 'Blood Orange', value: '#ff2200' },
             { name: 'Red', value: '#ef4444' },
             { name: 'Cyan', value: '#06b6d4' },
             { name: 'Green', value: '#22c55e' },
@@ -80,46 +132,14 @@ API KEY (Restricted to memefusion.aeye.monster and wealthcoop.github.io)
 
         const AI_FILTERS = [
             { id: 'none', name: 'Original', icon: 'image', prompt: '' },
+            { id: 'synth-beast', name: 'Synth-Beast', icon: 'zap', prompt: 'ULTIMATE CYBERNETIC TRANSFORMATION: Hyper-detailed cyberpunk beast fusion. Replace all organic materials with sleek obsidian-black cybernetic armor plating with glowing blood-orange (#ff2200) circuit patterns. One eye MUST be a prominent glowing cybernetic apex eye with intense orange radiance. Add chrome accents, holographic overlays, and volumetric neon lighting. Maintain exact pose and silhouette. Ultra-realistic 8K render with dramatic rim lighting.' },
             { id: 'anime', name: 'Anime', icon: 'swords', prompt: 'High-definition Shonen anime illustration, sharp cel-shading, vibrant colors, iconic expressive manga eyes, professional line art, Studio Ghibli meets Makoto Shinkai aesthetic' },
             { id: 'sketch', name: 'Sketch', icon: 'pencil', prompt: 'Masterful hand-drawn graphite pencil sketch, artistic cross-hatching, realistic charcoal shading, fine detailed pencil strokes, textured white paper background' },
-            { id: 'cyberpunk', name: 'Cyberpunk', icon: 'zap', prompt: 'Dramatically overhaul this image into a gritty Cyberpunk Masterpiece. Replace human skin with visible cybernetic tech-plating and robotic circuits. Subject must wear glowing neon-lit futuristic armor. Heavy rain-slicked tech-noir city lighting with high-contrast electric blue and hot pink hues' },
+            { id: 'cyberpunk', name: 'Cyberpunk', icon: 'cpu', prompt: 'Dramatically overhaul this image into a gritty Cyberpunk Masterpiece. Replace human skin with visible cybernetic tech-plating and robotic circuits. Subject must wear glowing neon-lit futuristic armor. Heavy rain-slicked tech-noir city lighting with high-contrast electric blue and hot pink hues' },
             { id: '3d', name: '3D Render', icon: 'box', prompt: 'Completely recreate this scene as a high-end 3D CGI animation still. Transform the subject into a stylized 3D vinyl character with smooth plastic skin textures. High-poly Disney-Pixar film aesthetic, volumetric soft rim lighting, subsurface scattering, extreme depth-of-field, rendered in Octane for Unreal Engine 5' },
             { id: 'retro', name: 'Retro VHS', icon: 'monitor', prompt: '80s retro synthwave aesthetic, dramatic VHS glitch effects, chromatic aberration, heavy scanline distortion, vintage saturated neon colors' },
             { id: 'oil', name: 'Oil Painting', icon: 'palette', prompt: 'Thick impasto oil painting, heavy visible palette knife strokes, classical museum masterpiece texture, rich blended oil colors, canvas grain' },
         ];
-
-        const fetchWithRetry = async (url, options, maxRetries = 3) => {
-            for (let i = 0; i < maxRetries; i++) {
-                try {
-                    const response = await fetch(url, options);
-                    const data = await response.json();
-                    
-                    if (response.ok) return data;
-                    
-                    const errorMessage = data.error?.message || "Unknown error";
-                    
-                    if (response.status === 400) {
-                        if (errorMessage.toLowerCase().includes("safety") || JSON.stringify(data).includes("SAFETY")) {
-                            throw new Error("Safety Block: The AI considered this image/text too sensitive.");
-                        }
-                        if (errorMessage.toLowerCase().includes("large") || errorMessage.toLowerCase().includes("limit")) {
-                            throw new Error("File too large. Try taking a screenshot of the photo instead.");
-                        }
-                    }
-                    
-                    if (response.status === 403 || response.status === 401) {
-                        throw new Error("API Expired! Please generate a NEW key and ensure Website Referrers are set properly in Google Cloud.");
-                    }
-
-                    if (response.status === 429) throw new Error("Quota Reached. Please wait 60 seconds.");
-                    
-                    throw new Error(`API ${response.status}: ${errorMessage}`);
-                } catch (err) {
-                    if (i === maxRetries - 1 || err.message.includes("Block") || err.message.includes("Expired") || err.message.includes("Quota")) throw err;
-                    await new Promise(res => setTimeout(res, 2000));
-                }
-            }
-        };
 
         const Icon = ({ name, size = 24, className = "" }) => {
             const containerRef = useRef(null);
@@ -143,11 +163,25 @@ API KEY (Restricted to memefusion.aeye.monster and wealthcoop.github.io)
             const [selectedFilter, setSelectedFilter] = useState('none');
             const [loading, setLoading] = useState(false);
             const [cooldown, setCooldown] = useState(false);
+            const [cooldownTime, setCooldownTime] = useState(0);
             const [visionLoading, setVisionLoading] = useState(false);
             const [fusedImage, setFusedImage] = useState(null);
             const [error, setError] = useState(null);
 
-            const triggerCooldown = () => { setCooldown(true); setTimeout(() => setCooldown(false), 8000); };
+            const triggerCooldown = (seconds = 10) => { 
+                setCooldown(true); 
+                setCooldownTime(seconds);
+                const interval = setInterval(() => {
+                    setCooldownTime(prev => {
+                        if (prev <= 1) {
+                            clearInterval(interval);
+                            setCooldown(false);
+                            return 0;
+                        }
+                        return prev - 1;
+                    });
+                }, 1000);
+            };
 
             const handleFileUpload = (e) => {
                 const file = e.target.files[0];
@@ -160,121 +194,264 @@ API KEY (Restricted to memefusion.aeye.monster and wealthcoop.github.io)
 
             const suggestCaptions = async () => {
                 if (!image || visionLoading || cooldown) return;
-                if (!DEFAULT_API_KEY) { setError("API Key Missing. Renew your key in the code."); return; }
                 setVisionLoading(true); setError(null);
-                const base64Data = image.split(',')[1];
                 try {
-                    const data = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${DEFAULT_API_KEY}`, {
+                    const response = await fetch(`${API_BASE_URL}/api/generate-caption`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: "Suggest a humorous viral meme caption. JSON: {top, bottom}." }, { inlineData: { mimeType: "image/png", data: base64Data } }] }], generationConfig: { responseMimeType: "application/json" } })
+                        body: JSON.stringify({ imageData: image })
                     });
-                    const suggested = JSON.parse(data.candidates[0].content.parts[0].text);
-                    setTopText(suggested.top.toUpperCase()); setBottomText(suggested.bottom.toUpperCase());
-                    triggerCooldown();
-                } catch (e) { setError(e.message); } finally { setVisionLoading(false); }
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Failed to generate caption');
+                    setTopText(data.top);
+                    setBottomText(data.bottom);
+                    triggerCooldown(10);
+                } catch (e) { 
+                    setError(e.message); 
+                } finally { 
+                    setVisionLoading(false); 
+                }
             };
 
             const fuseWithAI = async () => {
                 if (!image || cooldown) return;
-                if (!DEFAULT_API_KEY) { setError("API Key Missing. Renew your key in the code."); return; }
                 setLoading(true); setError(null);
                 const filter = AI_FILTERS.find(f => f.id === selectedFilter);
-                const base64Data = image.split(',')[1];
                 try {
-                    const data = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${DEFAULT_API_KEY}`, {
+                    const response = await fetch(`${API_BASE_URL}/api/fuse-image`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
-                            contents: [{ 
-                                parts: [
-                                    { text: `TOTAL ARTISTIC OVERHAUL DIRECTIVE: Completely re-build this image from scratch into the following professional art style: ${filter.prompt}. CORE RULE: You must maintain the exact pose, body orientation, and facial silhouette of the original subject so it is recognizable. Replace all real-world materials with stylistic ones. Subject context: "${topText} ${bottomText}". Studio quality 4k render.` }, 
-                                    { inlineData: { mimeType: "image/png", data: base64Data } }
-                                ] 
-                            }], 
-                            generationConfig: { responseModalities: ['TEXT', 'IMAGE'] } 
+                            imageData: image,
+                            filterPrompt: filter.prompt,
+                            topText,
+                            bottomText
                         })
                     });
-
-                    const candidate = data.candidates?.[0];
-                    if (candidate?.finishReason === "SAFETY") {
-                        throw new Error("Safety Block: The AI refused to generate this specific visual.");
-                    }
-
-                    const imagePart = candidate?.content?.parts?.find(p => p.inlineData);
-                    if (!imagePart) {
-                        throw new Error("Fusion Failed: No image returned. Try different text.");
-                    }
-
-                    setFusedImage(`data:image/png;base64,${imagePart.inlineData.data}`);
-                    triggerCooldown();
-                } catch (e) { setError(e.message); } finally { setLoading(false); }
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Failed to fuse image');
+                    setFusedImage(data.fusedImage);
+                    triggerCooldown(10);
+                } catch (e) { 
+                    setError(e.message); 
+                } finally { 
+                    setLoading(false); 
+                }
             };
 
             if (view === 'landing') return (
-                <div className="min-h-screen flex flex-col items-center">
+                <div className="min-h-screen flex flex-col items-center relative overflow-hidden">
+                    {/* Animated background elements */}
+                    <div className="absolute inset-0 opacity-20">
+                        <div className="absolute top-20 left-10 synth-beast-eye"></div>
+                        <div className="absolute bottom-40 right-20 synth-beast-eye" style={{animationDelay: '1s'}}></div>
+                    </div>
+
                     <nav className="w-full p-6 flex justify-between items-center z-10 safe-pt">
-                        <div className="flex items-center gap-2"><Icon name="sparkles" className="text-yellow-500" /><span className="text-xl font-black italic uppercase">MemeFusion</span></div>
-                        <button onClick={() => setView('editor')} className="bg-yellow-500 text-slate-950 px-6 py-2 rounded-full font-black uppercase text-xs">Enter Forge</button>
+                        <div className="flex items-center gap-3">
+                            <div className="synth-beast-eye" style={{width: '40px', height: '40px'}}></div>
+                            <span className="text-xl font-black brand-font uppercase tracking-wider">MemeFusion</span>
+                        </div>
+                        <button onClick={() => setView('editor')} className="tier-badge text-white px-6 py-2 rounded-full font-black uppercase text-xs tracking-wider">
+                            Enter Forge
+                        </button>
                     </nav>
+                    
                     <main className="flex-1 flex flex-col items-center justify-center text-center px-6 py-24 z-10">
-                        <h1 className="text-7xl md:text-9xl font-black italic uppercase tracking-tighter mb-8 glow-text">Meme <span className="text-yellow-500">Forge</span></h1>
-                        <p className="text-slate-400 text-lg md:text-2xl max-w-2xl mb-12 font-medium">Create viral content with AI. Cinematic Fusion Pro.</p>
-                        <button onClick={() => setView('editor')} className="px-12 py-6 bg-yellow-500 text-slate-950 rounded-full font-black uppercase italic tracking-tighter text-2xl shadow-2xl">Launch Studio</button>
+                        <div className="synth-beast-eye mb-8" style={{width: '80px', height: '80px'}}></div>
+                        <h1 className="text-7xl md:text-9xl font-black brand-font uppercase tracking-tighter mb-4 glow-text" style={{color: '#ff2200'}}>
+                            Synth-Beast
+                        </h1>
+                        <p className="text-4xl md:text-6xl font-black brand-font uppercase tracking-tight mb-8">
+                            Meme <span style={{color: '#ff2200'}}>Forge</span>
+                        </p>
+                        <p className="text-slate-400 text-lg md:text-2xl max-w-2xl mb-4 font-medium">
+                            Unleash the Beast. Forge the Future.
+                        </p>
+                        <p className="text-slate-500 text-sm md:text-lg max-w-xl mb-12">
+                            AI-powered meme creation with Vision, Fusion & Voice synthesis
+                        </p>
+                        <button 
+                            onClick={() => setView('editor')} 
+                            className="px-12 py-6 tier-badge text-white rounded-full font-black brand-font uppercase tracking-tighter text-2xl shadow-2xl transform hover:scale-105 transition-transform"
+                        >
+                            Launch Studio
+                        </button>
+                        
+                        <div className="mt-16 grid grid-cols-3 gap-8 max-w-2xl">
+                            <div className="text-center">
+                                <div className="text-3xl font-black brand-font" style={{color: '#ff2200'}}>AI Vision</div>
+                                <div className="text-sm text-slate-400 mt-2">Smart Captions</div>
+                            </div>
+                            <div className="text-center">
+                                <div className="text-3xl font-black brand-font" style={{color: '#ff2200'}}>8 Styles</div>
+                                <div className="text-sm text-slate-400 mt-2">Fusion Filters</div>
+                            </div>
+                            <div className="text-center">
+                                <div className="text-3xl font-black brand-font" style={{color: '#ff2200'}}>4K Export</div>
+                                <div className="text-sm text-slate-400 mt-2">Pro Quality</div>
+                            </div>
+                        </div>
                     </main>
+
+                    <footer className="w-full p-6 text-center text-xs text-slate-600 z-10">
+                        Powered by Gemini 2.5 AI • The Silent Forge-Master
+                    </footer>
                 </div>
             );
 
             return (
-                <div key="editor" className="min-h-screen bg-slate-900 text-white flex flex-col selection:bg-yellow-500 selection:text-slate-950">
+                <div key="editor" className="min-h-screen bg-slate-900 text-white flex flex-col selection:bg-orange-500 selection:text-white">
                     <header className="p-6 pt-12 flex justify-between items-center bg-slate-900/50 backdrop-blur-xl border-b border-white/5 sticky top-0 z-40 safe-pt">
-                        <button onClick={() => setView('landing')} className="flex items-center gap-2 group"><Icon name="chevron-left" className="text-slate-500" /><h1 className="text-xl font-black italic">Studio</h1></button>
-                        <div className={`px-4 py-1 rounded-full text-[10px] font-black shadow-lg transition-colors ${cooldown ? 'bg-red-500 animate-pulse' : 'bg-yellow-500 text-slate-950'}`}>
-                            {cooldown ? 'RECHARGING' : 'PRO ACTIVE'}
+                        <button onClick={() => setView('landing')} className="flex items-center gap-2 group">
+                            <Icon name="chevron-left" className="text-slate-500" />
+                            <h1 className="text-xl font-black brand-font">Studio</h1>
+                        </button>
+                        <div className={`px-4 py-1 rounded-full text-[10px] font-black shadow-lg transition-colors ${cooldown ? 'bg-slate-800 text-slate-400 beast-charging' : 'tier-badge text-white'}`}>
+                            {cooldown ? `RECHARGING ${cooldownTime}s` : 'BEAST UNLEASHED'}
                         </div>
                     </header>
 
                     <main className="flex-1 p-6 space-y-8 max-w-2xl mx-auto w-full pb-32 overflow-y-auto no-scrollbar">
                         {error && (
                             <div className="bg-red-500/10 border border-red-500/50 p-6 rounded-3xl text-red-500 text-xs font-bold text-center flex flex-col items-center justify-center gap-3 animate-pulse">
-                                <div className="flex items-center gap-2 font-black uppercase"><Icon name="alert-triangle" size={14} /> AI Engine Blocked</div>
+                                <div className="flex items-center gap-2 font-black uppercase"><Icon name="alert-triangle" size={14} /> Beast Blocked</div>
                                 <div className="opacity-80 leading-relaxed">{error}</div>
-                                {error.includes("Expired") && <p className="text-[10px] text-white bg-red-500 px-3 py-1 rounded-full">New Key Required</p>}
                             </div>
                         )}
 
-                        <div className="aspect-square bg-slate-800 rounded-[3rem] border border-white/5 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl group active:scale-[0.98] transition-transform">
-                            {loading && <div className="absolute inset-0 z-30 bg-slate-950/90 flex flex-col items-center justify-center space-y-4"><div className="w-16 h-16 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin"></div><p className="font-black uppercase text-xs text-yellow-500">Synthesizing Style...</p></div>}
-                            {!image ? <div className="text-center space-y-4"><div className="w-20 h-20 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto border border-white/10 active:scale-110 transition-transform"><Icon name="upload" className="text-slate-500" /></div><p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Tap to upload base</p></div> : 
-                            <div className="w-full h-full relative"><img src={fusedImage || image} className="w-full h-full object-cover" />{!fusedImage && <div className={`absolute inset-0 p-8 flex flex-col pointer-events-none ${layout === 'classic' ? 'justify-between' : layout === 'top' ? 'justify-start' : layout === 'bottom' ? 'justify-end' : 'justify-center'}`}><h2 className="text-center font-black uppercase break-words leading-none meme-text" style={{ fontSize: `${fontSize}px`, color: textColor }}>{topText}</h2>{(layout === 'classic' || layout === 'bottom') && <h2 className="text-center font-black uppercase break-words leading-none meme-text" style={{ fontSize: `${fontSize}px`, color: textColor }}>{bottomText}</h2>}</div>}</div>}
+                        <div className="aspect-square bg-slate-800 rounded-[3rem] border-2 glow-border flex flex-col items-center justify-center relative overflow-hidden shadow-2xl group active:scale-[0.98] transition-transform">
+                            {loading && (
+                                <div className="absolute inset-0 z-30 bg-slate-950/90 flex flex-col items-center justify-center space-y-4">
+                                    <div className="synth-beast-eye"></div>
+                                    <p className="font-black brand-font uppercase text-xs" style={{color: '#ff2200'}}>Synth-Beast Forging...</p>
+                                </div>
+                            )}
+                            {!image ? (
+                                <div className="text-center space-y-4">
+                                    <div className="w-20 h-20 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto border-2 glow-border active:scale-110 transition-transform">
+                                        <Icon name="upload" className="text-slate-500" />
+                                    </div>
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Tap to upload base</p>
+                                </div>
+                            ) : (
+                                <div className="w-full h-full relative">
+                                    <img src={fusedImage || image} className="w-full h-full object-cover" alt="Meme" />
+                                    {!fusedImage && (
+                                        <div className={`absolute inset-0 p-8 flex flex-col pointer-events-none ${layout === 'classic' ? 'justify-between' : layout === 'top' ? 'justify-start' : layout === 'bottom' ? 'justify-end' : 'justify-center'}`}>
+                                            <h2 className="text-center font-black uppercase break-words leading-none meme-text" style={{ fontSize: `${fontSize}px`, color: textColor }}>{topText}</h2>
+                                            {(layout === 'classic' || layout === 'bottom') && (
+                                                <h2 className="text-center font-black uppercase break-words leading-none meme-text" style={{ fontSize: `${fontSize}px`, color: textColor }}>{bottomText}</h2>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                             {!loading && <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleFileUpload} />}
                         </div>
 
                         <div className="flex gap-4 overflow-x-auto no-scrollbar py-2">
-                            {STARTER_TEMPLATES.map(t => <button key={t.id} onClick={() => { setImage(t.url); setError(null); }} className="flex-shrink-0 w-24 h-24 rounded-[1.5rem] overflow-hidden border border-white/10 active:scale-90 transition-transform shadow-xl"><img src={t.url} className="w-full h-full object-cover" /></button>)}
+                            {STARTER_TEMPLATES.map(t => (
+                                <button 
+                                    key={t.id} 
+                                    onClick={() => { setImage(t.url); setError(null); }} 
+                                    className="flex-shrink-0 w-24 h-24 rounded-[1.5rem] overflow-hidden border-2 border-white/10 hover:border-orange-500/50 active:scale-90 transition-all shadow-xl"
+                                >
+                                    <img src={t.url} className="w-full h-full object-cover" alt={t.name} />
+                                </button>
+                            ))}
                         </div>
 
                         <div className="space-y-6">
                             <div className="bg-slate-800/30 p-2 rounded-[2rem] border border-white/5 flex gap-1 shadow-lg">
-                                {LAYOUTS.map(L => <button key={L.id} onClick={() => setLayout(L.id)} className={`flex-1 py-4 rounded-3xl flex flex-col items-center gap-1 transition-all ${layout === L.id ? 'bg-yellow-500 text-slate-950 font-black' : 'text-slate-500 opacity-60'}`}><Icon name={L.icon} size={18} /><span className="text-[9px] uppercase font-bold">{L.name}</span></button>)}
+                                {LAYOUTS.map(L => (
+                                    <button 
+                                        key={L.id} 
+                                        onClick={() => setLayout(L.id)} 
+                                        className={`flex-1 py-4 rounded-3xl flex flex-col items-center gap-1 transition-all ${layout === L.id ? 'tier-badge text-white font-black' : 'text-slate-500 opacity-60'}`}
+                                    >
+                                        <Icon name={L.icon} size={18} />
+                                        <span className="text-[9px] uppercase font-bold">{L.name}</span>
+                                    </button>
+                                ))}
                             </div>
+                            
                             <div className="space-y-4 relative">
-                                <button onClick={suggestCaptions} disabled={visionLoading || !image || cooldown} className={`absolute -top-12 right-0 flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-black uppercase transition-all shadow-xl ${visionLoading || cooldown ? 'bg-slate-800 text-slate-600' : 'bg-indigo-600 text-white active:scale-95'}`}>{visionLoading ? "..." : <Icon name="wand-2" size={14} />} AI Vision</button>
-                                <div className="bg-slate-800/50 p-4 rounded-[2rem] border border-white/5 shadow-inner"><input placeholder="TOP TEXT" className="bg-transparent w-full text-center font-black uppercase outline-none text-xl" value={topText} onChange={e => setTopText(e.target.value)} /></div>
-                                <div className="bg-slate-800/50 p-4 rounded-[2rem] border border-white/5 shadow-inner"><input placeholder="BOTTOM TEXT" className="bg-transparent w-full text-center font-black uppercase outline-none text-xl" value={bottomText} onChange={e => setBottomText(e.target.value)} /></div>
+                                <button 
+                                    onClick={suggestCaptions} 
+                                    disabled={visionLoading || !image || cooldown} 
+                                    className={`absolute -top-12 right-0 flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-black uppercase transition-all shadow-xl ${visionLoading || cooldown ? 'bg-slate-800 text-slate-600' : 'bg-indigo-600 text-white active:scale-95'}`}
+                                >
+                                    {visionLoading ? "..." : <Icon name="wand-2" size={14} />} AI Vision
+                                </button>
+                                <div className="bg-slate-800/50 p-4 rounded-[2rem] border border-white/5 shadow-inner">
+                                    <input 
+                                        placeholder="TOP TEXT" 
+                                        className="bg-transparent w-full text-center font-black uppercase outline-none text-xl" 
+                                        value={topText} 
+                                        onChange={e => setTopText(e.target.value)} 
+                                    />
+                                </div>
+                                <div className="bg-slate-800/50 p-4 rounded-[2rem] border border-white/5 shadow-inner">
+                                    <input 
+                                        placeholder="BOTTOM TEXT" 
+                                        className="bg-transparent w-full text-center font-black uppercase outline-none text-xl" 
+                                        value={bottomText} 
+                                        onChange={e => setBottomText(e.target.value)} 
+                                    />
+                                </div>
                             </div>
+                            
                             <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2 px-1">
-                                {AI_FILTERS.map(F => <button key={F.id} onClick={() => setSelectedFilter(F.id)} className={`flex-shrink-0 px-6 py-4 rounded-[1.5rem] border transition-all flex items-center gap-3 shadow-md ${selectedFilter === F.id ? 'bg-yellow-500/20 border-yellow-500 text-yellow-500 shadow-yellow-500/10' : 'bg-slate-800/30 border-white/5 text-slate-400'}`}><Icon name={F.icon} size={16} /><span className="text-[11px] font-black uppercase">{F.name}</span></button>)}
+                                {AI_FILTERS.map(F => (
+                                    <button 
+                                        key={F.id} 
+                                        onClick={() => setSelectedFilter(F.id)} 
+                                        className={`flex-shrink-0 px-6 py-4 rounded-[1.5rem] border transition-all flex items-center gap-3 shadow-md ${selectedFilter === F.id ? 'glow-border tier-badge text-white' : 'bg-slate-800/30 border-white/5 text-slate-400'}`}
+                                    >
+                                        <Icon name={F.icon} size={16} />
+                                        <span className="text-[11px] font-black uppercase">{F.name}</span>
+                                        {F.id === 'synth-beast' && selectedFilter === F.id && (
+                                            <div className="synth-beast-eye" style={{width: '16px', height: '16px', minWidth: '16px'}}></div>
+                                        )}
+                                    </button>
+                                ))}
                             </div>
+                            
                             <div className="bg-slate-800/30 p-8 rounded-[2.5rem] border border-white/5 space-y-6 shadow-lg">
-                                <input type="range" min="12" max="100" value={fontSize} onChange={e => setFontSize(parseInt(e.target.value))} className="w-full" />
-                                <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">{PRESET_COLORS.map(c => <button key={c.value} onClick={() => setTextColor(c.value)} className={`w-10 h-10 rounded-full border-2 transition-transform active:scale-90 ${textColor === c.value ? 'border-yellow-500 scale-110' : 'border-transparent opacity-60'}`} style={{ backgroundColor: c.value }} />)}</div>
+                                <input 
+                                    type="range" 
+                                    min="12" 
+                                    max="100" 
+                                    value={fontSize} 
+                                    onChange={e => setFontSize(parseInt(e.target.value))} 
+                                    className="w-full" 
+                                />
+                                <div className="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+                                    {PRESET_COLORS.map(c => (
+                                        <button 
+                                            key={c.value} 
+                                            onClick={() => setTextColor(c.value)} 
+                                            className={`w-10 h-10 rounded-full border-2 transition-transform active:scale-90 ${textColor === c.value ? 'border-orange-500 scale-110' : 'border-transparent opacity-60'}`} 
+                                            style={{ backgroundColor: c.value }} 
+                                        />
+                                    ))}
+                                </div>
                             </div>
                         </div>
 
-                        <button onClick={fuseWithAI} disabled={loading || !image || cooldown} className={`w-full h-24 rounded-[2.5rem] font-black uppercase tracking-tighter transition-all shadow-2xl flex flex-col items-center justify-center ${loading || !image || cooldown ? 'bg-slate-800 text-slate-500' : 'bg-yellow-500 text-slate-950 active:scale-95'}`}>
-                            <div className="flex items-center gap-2"><Icon name="zap" size={24} /><span>Fuse with AI</span></div>
-                            <span className="text-[10px] font-black opacity-70">{cooldown ? 'RECHARGING' : 'Engine Live'}</span>
+                        <button 
+                            onClick={fuseWithAI} 
+                            disabled={loading || !image || cooldown || selectedFilter === 'none'} 
+                            className={`w-full h-24 rounded-[2.5rem] font-black brand-font uppercase tracking-tighter transition-all shadow-2xl flex flex-col items-center justify-center ${loading || !image || cooldown || selectedFilter === 'none' ? 'bg-slate-800 text-slate-500' : 'tier-badge text-white active:scale-95'}`}
+                        >
+                            <div className="flex items-center gap-2">
+                                <Icon name="zap" size={24} />
+                                <span>Unleash Beast</span>
+                            </div>
+                            <span className="text-[10px] font-black opacity-70">
+                                {cooldown ? `RECHARGING ${cooldownTime}s` : selectedFilter === 'none' ? 'SELECT FILTER' : 'Forge Active'}
+                            </span>
                         </button>
                     </main>
                 </div>
