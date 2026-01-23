@@ -23,10 +23,107 @@ jobs:
         with:
           node-version: '20'
       
-      - name: Install Capacitor Android
+      - name: Install Capacitor
         run: |
           npm init -y
-          npm install @capacitor/android@latest
+          npm install @capacitor/android@latest @capacitor/core@latest @capacitor/cli@latest
+      
+      - name: Create Capacitor config
+        run: |
+          cat > capacitor.config.json << 'EOF'
+          {
+            "appId": "com.wealthcoop.memefusion",
+            "appName": "MemeFusion",
+            "webDir": "www"
+          }
+          EOF
+      
+      - name: Create web assets directory
+        run: |
+          mkdir -p www
+          cp index.html www/
+          cp -r css www/ 2>/dev/null || true
+          cp -r js www/ 2>/dev/null || true
+          cp -r images www/ 2>/dev/null || true
+          cp -r assets www/ 2>/dev/null || true
+      
+      - name: Create Capacitor Cordova plugins folder
+        run: |
+          mkdir -p android/capacitor-cordova-android-plugins/src/main/java
+          
+          cat > android/capacitor-cordova-android-plugins/cordova.variables.gradle << 'EOF'
+          ext {
+            cdvMinSdkVersion = project.hasProperty('minSdkVersion' ) ? rootProject.ext.minSdkVersion : 24
+            cdvPluginPostBuildExtras = []
+            cordovaConfig = [:]
+          }
+          EOF
+          
+          cat > android/capacitor-cordova-android-plugins/build.gradle << 'EOF'
+          ext {
+              androidxAppCompatVersion = project.hasProperty('androidxAppCompatVersion') ? rootProject.ext.androidxAppCompatVersion : '1.7.1'
+              cordovaAndroidVersion = project.hasProperty('cordovaAndroidVersion') ? rootProject.ext.cordovaAndroidVersion : '14.0.1'
+          }
+          buildscript {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+              dependencies {
+                  classpath 'com.android.tools.build:gradle:8.13.0'
+              }
+          }
+          apply plugin: 'com.android.library'
+          android {
+              namespace = "capacitor.cordova.android.plugins"
+              compileSdk = project.hasProperty('compileSdkVersion') ? rootProject.ext.compileSdkVersion : 36
+              defaultConfig {
+                  minSdkVersion project.hasProperty('minSdkVersion') ? rootProject.ext.minSdkVersion : 24
+                  targetSdkVersion project.hasProperty('targetSdkVersion') ? rootProject.ext.targetSdkVersion : 36
+                  versionCode 1
+                  versionName "1.0"
+              }
+              lintOptions {
+                  abortOnError = false
+              }
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_21
+                  targetCompatibility JavaVersion.VERSION_21
+              }
+          }
+          repositories {
+              google()
+              mavenCentral()
+              flatDir{
+                  dirs 'src/main/libs', 'libs'
+              }
+          }
+          dependencies {
+              implementation fileTree(dir: 'src/main/libs', include: ['*.jar'])
+              implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+              implementation "org.apache.cordova:framework:$cordovaAndroidVersion"
+          }
+          apply from: "cordova.variables.gradle"
+          for (def func : cdvPluginPostBuildExtras) {
+              func()
+          }
+          EOF
+          
+          mkdir -p android/capacitor-cordova-android-plugins/src/main/res/values
+          cat > android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+          </manifest>
+          EOF
+      
+      - name: Create web assets for Android
+        run: |
+          mkdir -p android/app/src/main/assets/public
+          cp index.html android/app/src/main/assets/public/
+          cp -r css android/app/src/main/assets/public/ 2>/dev/null || true
+          cp -r js android/app/src/main/assets/public/ 2>/dev/null || true
+          cp -r images android/app/src/main/assets/public/ 2>/dev/null || true
+          cp -r assets android/app/src/main/assets/public/ 2>/dev/null || true
       
       - name: Set up JDK 21
         uses: actions/setup-java@v4
