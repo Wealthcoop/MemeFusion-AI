@@ -47,25 +47,52 @@ jobs:
           cp -r images www/ 2>/dev/null || true
           cp -r assets www/ 2>/dev/null || true
       
+      - name: Create Android web assets
+        run: |
+          mkdir -p android/app/src/main/assets/public
+          cp -r www/* android/app/src/main/assets/public/
+      
       - name: Create Capacitor Cordova plugins folder
         run: |
-          mkdir -p android/capacitor-cordova-android-plugins/src/main/java
-          mkdir -p android/capacitor-cordova-android-plugins/src/main/res
-          
+          mkdir -p android/capacitor-cordova-android-plugins
+          cat > android/capacitor-cordova-android-plugins/cordova.variables.gradle << 'EOF'
+          ext {
+              minSdkVersion = 23
+              compileSdkVersion = 36
+              targetSdkVersion = 36
+              androidxAppCompatVersion = '1.7.0'
+              androidxWebkitVersion = '1.12.1'
+              junitVersion = '4.13.2'
+              androidxJunitVersion = '1.2.1'
+              androidxEspressoCoreVersion = '3.6.1'
+              cordovaAndroidVersion = '10.1.1'
+          }
+          EOF
           cat > android/capacitor-cordova-android-plugins/build.gradle << 'EOF'
+          buildscript {
+              repositories {
+                  google( )
+                  mavenCentral()
+              }
+              dependencies {
+                  classpath 'com.android.tools.build:gradle:8.13.0'
+              }
+          }
+          
           apply plugin: 'com.android.library'
           
           android {
-              namespace "capacitor.cordova.android.plugins"
-              compileSdk project.hasProperty('compileSdkVersion' ) ? rootProject.ext.compileSdkVersion : 36
-              
+              namespace 'capacitor.cordova.android.plugins'
+              compileSdk 36
               defaultConfig {
-                  minSdk project.hasProperty('minSdkVersion') ? rootProject.ext.minSdkVersion : 23
-                  targetSdk project.hasProperty('targetSdkVersion') ? rootProject.ext.targetSdkVersion : 36
+                  minSdk 23
+                  targetSdk 36
               }
-              
-              lintOptions {
-                  abortOnError false
+              buildTypes {
+                  release {
+                      minifyEnabled false
+                      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                  }
               }
           }
           
@@ -81,27 +108,8 @@ jobs:
               implementation fileTree(dir: 'src/main/libs', include: ['*.jar'])
           }
           EOF
-          
-          cat > android/capacitor-cordova-android-plugins/cordova.variables.gradle << 'EOF'
-          ext {
-              // Cordova plugin variables
-          }
-          EOF
-          
-          cat > android/capacitor-cordova-android-plugins/src/main/AndroidManifest.xml << 'EOF'
-          <?xml version="1.0" encoding="utf-8"?>
-          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-          </manifest>
-          EOF
-      
-      - name: Create web assets for Android
-        run: |
-          mkdir -p android/app/src/main/assets/public
-          cp index.html android/app/src/main/assets/public/
-          cp -r css android/app/src/main/assets/public/ 2>/dev/null || true
-          cp -r js android/app/src/main/assets/public/ 2>/dev/null || true
-          cp -r images android/app/src/main/assets/public/ 2>/dev/null || true
-          cp -r assets android/app/src/main/assets/public/ 2>/dev/null || true
+          mkdir -p android/capacitor-cordova-android-plugins/src/main/libs
+          touch android/capacitor-cordova-android-plugins/src/main/libs/.gitkeep
       
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -118,7 +126,7 @@ jobs:
       - name: Create keystore.properties
         run: |
           cat > android/keystore.properties << EOF
-          storeFile=./app/memefusion-release.keystore
+          storeFile=memefusion-release.keystore
           storePassword=${{ secrets.KEYSTORE_PASSWORD }}
           keyAlias=${{ secrets.KEY_ALIAS }}
           keyPassword=${{ secrets.KEY_PASSWORD }}
@@ -130,13 +138,13 @@ jobs:
       
       - name: Install Android SDK 36
         run: |
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0" || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-36" "build-tools;36.0.0"
       
       - name: Build Release AAB
+        working-directory: android
         run: |
-          cd android
           chmod +x gradlew
-          ./gradlew bundleRelease --no-daemon --stacktrace
+          ./gradlew bundleRelease --stacktrace
       
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
