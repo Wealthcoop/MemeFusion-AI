@@ -8,6 +8,8 @@ MemeFusion AI uses a freemium model with ad-supported free tier and premium subs
 - AI Vision caption generation
 - Full meme editor functionality
 - 10-second cooldown between AI operations
+- 6 free AI generations per day (resets daily at midnight)
+- Earn +3 bonus generations by watching rewarded video ads during cooldown
 - Standard processing priority
 - Watermark-free exports
 
@@ -49,10 +51,8 @@ Unleash unlimited AI power! Remove all cooldowns and unlock priority processing 
 ## Ad Strategy (Free Tier)
 
 ### Ad Placement
-- **Interstitial ads** after every 5 meme exports
-- **Banner ads** on the community feed (future feature)
-- **Rewarded video ads** - Watch ad to skip 10-second cooldown (optional)
-
+- **Primary ad placement:** Rewarded video ads shown during 10-second cooldown period-
+- *Strategic benefit:** Ads shown during cooldown prevent user frustration and API rate limit errors
 ### Ad-to-Credit System
 **Concept:** Users can watch a 30-second rewarded video ad to earn 1 "Beast Credit"
 - 1 Beast Credit = Skip one cooldown period
